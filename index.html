@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head lang="ru">
+        <meta charset="UTF-8">
+        <title>Описание HTML</title>
+        <script defer src="./main.js"></script>
+    </head>
+    <style> 
+        .container {
+            display: flex;
+            justify-content: space-around;
+            font-size: 15px;
+        }
+        .block__one {
+            max-width: 500px;
+            width: 100%;
+        }
+        .block__two {
+            max-width: 1800px;
+            width: 100%;
+        }
+        .table__th{
+            outline: 1px solid #000;
+        }
+        .table__td{
+            outline: 1px solid #000;
+        }
+        .table__btn{
+            width: 100%;
+            background-color: #fff;
+            border: 0;
+            transition: all .2s ease-in-out;
+        }
+        .table__btn:hover {
+            color: #fff;
+            background-color: #e10000;
+        }
+        .table__btn:active {
+            color: #fff;
+            background-color: #810000;
+        }
+        .block__one_form{
+            margin-bottom: 10px;
+        }
+        .btn__form {
+            padding: 10px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #4caf50;
+        }
+        .block__one_look{
+            padding: 10px;
+            height: 100%;
+            max-height: 500px;
+            overflow-y: scroll;
+            outline: 1px solid #000;
+        }
+        .block__one_btn {
+            padding: 20px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #3f51b5;
+        }
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            padding: 10px;
+            height: 500px;
+        }
+        table {
+            width: inherit;
+        }
+        input {
+            padding: 10px;
+        }
+    </style>
+    <body>
+        <div id="container"></div>
+    </body>
+</html>

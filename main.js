@@ -1,170 +1,169 @@
-document.addEventListener('DOMContentLoaded', function(){
-        let container = document.getElementById('container');
-        container.classList.add('container');
-    
-        let divOne = document.createElement('div');
-        divOne.classList.add('block__one');
-    
-        let divForm = document.createElement('div');
-        divForm.classList.add('block__one_form')
-        let divLook = document.createElement('div');
-        divLook.classList.add('block__one_look');
-        
-        let raNum = 0;
-    
-        let butNubAll = document.createElement('button');
-        butNubAll.classList.add('block__one_btn')
-        butNubAll.textContent = `Сделано товаров - ${raNum}`;
-    
-        let form = document.createElement('form');
-        let inputOne = document.createElement('input');
-        inputOne.type = 'text';
-        inputOne.placeholder = 'Бренд';
-        let inputTwo = document.createElement('input');
-        inputTwo.type = 'text';
-        inputTwo.placeholder = 'Артикул';
-        let inputThree = document.createElement('textarea');
-        inputThree.placeholder = '1 строка - заголовок / 2 строка - текст';
-        let buttonForm = document.createElement('button');
-        buttonForm.classList.add('btn__form')
-        
-        buttonForm.textContent = 'Отправить';
-    
-        let divTwo = document.createElement('div');
-        divTwo.classList.add('block__two');
-    
-        let table = document.createElement('table');
-        let tHead = document.createElement('thead');
-        let tBody = document.createElement('tbody');
-        let trHead = document.createElement('tr');
-        
-        
-    
-        let thOne = document.createElement('th');
-        let thTwo = document.createElement('th');
-        let thThree = document.createElement('th');
-        thOne.classList.add('table__th');
-        thTwo.classList.add('table__th');
-        thThree.classList.add('table__th');
-        
-        thOne.textContent = 'Бренд';
-        thTwo.textContent = 'Артикул';
-        thThree.textContent = 'Описание';
-        
-        let tdOne = document.createElement('td');
-        let tdTwo = document.createElement('td');
-        let tdThree = document.createElement('td');
-        
-        container.append(divOne);
-        divOne.append(divForm);
-        divOne.append(divLook);
-        divOne.append(butNubAll);
-        divForm.append(form);
-        form.append(inputOne);
-        form.append(inputTwo);
-        form.append(inputThree);
-        divForm.append(buttonForm);
-        
-        container.append(divTwo);
-        
-        divTwo.append(table);
-        table.append(tHead);
-        table.append(tBody);
-        
-        tHead.append(trHead);
-        
-        trHead.append(thOne, thTwo, thThree);
-        //trBody.append(tdOne, tdTwo, tdThree);
-        
-        arrGet = [];
-    
-        buttonForm.addEventListener('click', function(){
-            arrItems = {
-                brand: inputOne.value,
-                article: inputTwo.value,
-                write: inputThree.value,
-            };
-            
-            for (let inArrItems in arrItems){
-                if (arrItems[inArrItems] === ''){
-                    return;   
-                }
-            }
-            
-            
-            function getList(getText){
-                let getResult = getText.trim().split('\n');
-                //console.log(getResult)
+document.addEventListener('DOMContentLoaded', function() {
+    let tbody = document.getElementById('tbody');
+    let checkResualt = document.getElementById('group__watch');
+    let arrItems = [];
+    /////////////// COUNTER
+    const counterA = document.getElementById('counter');
+    let startNum = 0;
+    counterA.textContent = `Сделано товаров: ${startNum}`;
 
-                let oneArr = [];
-                for (let x = 0; x <= getResult.length - 1; x = x + 2){
-                    oneArr.push(`${getResult[x]} - `)
-                }
+    /////////////// PUSH-ITEM-HTML
+    function pushItem (item){
+        console.log(item[2])
+        //for (let getInItem = 0; getInItem <= item.length - 1; getInItem++) {
+            let tr = document.createElement('tr');
+            for (let getInItems in item){
+                let td = document.createElement('td');
+                let btnTd = document.createElement('button');
+                //console.log(item[getInItem][getInItems]);
                 
-                    let twoArr = [];
-                    for (let a = 1; a <= getResult.length - 1; a = a + 2){
-                        twoArr.push(`${getResult[a]}<br>`)
-                    }
+                btnTd.textContent = `${item[getInItems]}`;
+                ////HANDLER BTN COPY
+                btnTd.addEventListener('click', function(){
+                navigator.clipboard.writeText(btnTd.textContent);
+                })
                 
-                let allArr = [];
-                for (let f = 0; f <= oneArr.length - 1; f++){
-                    allArr.push(`${oneArr[f]}${twoArr[f]}`)
-                }
+                td.append(btnTd);
                 
-                let getAllArr = allArr.join('')
-                //console.log(getAllArr)
-                
-                return getAllArr
+                tr.append(td);
             }
             
-            
-            let getBrand = arrItems.brand.trim();
-            //console.log(getBrand)
-            let getArticle = arrItems.article.trim();
-            //console.log(getWrite)
-            let getWrite = getList(arrItems.write);
-            
-            //console.log(test)
-            
-            let trBody = document.createElement('tr');
-            
-            let tdOne = document.createElement('td');
-            tdOne.classList.add('table__td');
-            let tdTwo = document.createElement('td');
-            tdTwo.classList.add('table__td_article')
-            let btnTdTwo = document.createElement('button');
-            
-            btnTdTwo.classList.add('table__btn');
-            //navigator.clipboard.writeText(btnTdTwo.textContent);
-            tdTwo.classList.add('table__td');
-            
-            
-            let tdThree = document.createElement('td');
-            tdThree.classList.add('table__td');
-                
-            tdOne.textContent = getBrand;
-            btnTdTwo.textContent = getArticle;
-            tdThree.textContent = `<p><b>Бренд: ${getBrand}</b><br><b>Артикул: ${getArticle}</b><br>${getWrite}</p>`;
-            //console.log(tdThree.textContent);
-            tdTwo.append(btnTdTwo)
-            trBody.append(tdOne,tdTwo,tdThree);
-            //console.log(newBtn)
-            tBody.append(trBody);
-            //Событие клик
-            btnTdTwo.addEventListener('click', function(){
-                navigator.clipboard.writeText(btnTdTwo.textContent);
-            })
-            //Конверт
-            let convertCont = new DOMParser().parseFromString(tdThree.textContent, 'text/html').body.firstChild
-            divLook.append(convertCont);
-            
-            //Счетчик
-            raNum++
-            butNubAll.textContent = `Сделано товаров - ${raNum}`;
-            divOne.append(butNubAll);
-            
-            inputTwo.value = '';
-            inputThree.value = '';
-        })
+            //console.log(tr);
+            tbody.append(tr);
+        //}
+    }
+    /////////////// HANDLER-TEXT
+    function handlerArr(item){
+        let getbrand = `<strong>Бренд:</strong> ${item.brand}<br>`;
+        let getArticle = `<strong>Артикул:</strong> ${item.article}<br>`;
+        
+        let resultTextArr = [];
+        
+        let getTextArr = [item.textTwoOne, item.textTwoTwo, item.textFor];
+        for (let deletEmpty in getTextArr){
+            if (getTextArr[deletEmpty] == ''){
+                continue;
+            }
+            else {
+                resultTextArr.push(getTextArr[deletEmpty]);
+            }
+        }
+        
+        let checkValue = []
+
+        for (let g in resultTextArr) {
+            if (item.textTwoOne == resultTextArr[g]){
+                let getAreaOne = `<b>Описание:</b><br> ${item.textTwoOne}<br>`;
+                checkValue.push(getAreaOne)
+            }
+            if (item.textTwoTwo == resultTextArr[g]){
+                let getAreaTwo = handlerAreaTwo(item.textTwoTwo)
+                checkValue.push(getAreaTwo)
+            }
+            if (item.textFor == resultTextArr[g]) {
+                let getAreaFor = handlerAreaFor(item.textFor);
+                checkValue.push(`<b>Применяемость:</b> ${getAreaFor}<br>`)
+            }
+        }
+        
     
+        let endArrAllItem = [getbrand, getArticle]
+        if (checkValue.length == 2){
+            endArrAllItem.push(checkValue.join(''));
+        }
+        else {
+            endArrAllItem.push(checkValue[0])
+        }
+        
+        let result = [item.brand, item.article, `<p>${endArrAllItem.join(' ')}</p>`]
+        
+        ////Add IN BLOCK WATCH - HTML ITEM
+        let transitHtmlText = new DOMParser().parseFromString(result[2],'text/html').body.firstChild
+        checkResualt.append(transitHtmlText);
+        
+        
+        pushItem(result)
+    }
+   /////////////// HANDLER-TWO/TWO 
+    function handlerAreaTwo(item){
+        let handlerItem = item.trim().split('\n');
+        
+        let oneArr = [];
+        for (let x = 0; x <= handlerItem.length - 1; x = x + 2){
+            oneArr.push(`${handlerItem[x]}: `)
+        }
+
+        let twoArr = [];
+        for (let a = 1; a <= handlerItem.length - 1; a = a + 2){
+            twoArr.push(`${handlerItem[a]}<br> `)
+        }
+
+        let endArr = [];
+        for (let f = 0; f <= oneArr.length - 1; f++){
+            endArr.push(`${oneArr[f]}${twoArr[f]}`)
+        }
+
+        let getAllArr = endArr.join('')
+                
+        return getAllArr
+    }
+   /////////////// HANDLER-AREA/FOR  
+    function handlerAreaFor(item) {
+        let getNumTextFor = document.getElementById('textarea__num');
+        let handlerTextFor = item.trim().split('\t');
+        let endHandlerTextFor = handlerTextFor.join(' ').split('\n');
+        
+        
+        let transitArr = []
+        for (let y = 0; y <= endHandlerTextFor.length - 1; y++){
+            let s = y + 1;
+            if (s % getNumTextFor.value == 0){
+                transitArr.push(`${endHandlerTextFor[y]}; `);
+            }
+            else {
+                transitArr.push(`${endHandlerTextFor[y]} `)
+            }
+        }
+        return transitArr.join(' ')
+    }
+    
+    /////////////// CLICK-SEND
+    const inputOne = document.getElementById('input__one');
+    const inputTwo = document.getElementById('input__two');
+    const textareaOne = document.getElementById('textarea__one');
+    const textareaTwo = document.getElementById('textarea__two');
+    const textareaThree = document.getElementById('textarea__three');
+    const btnInput = document.getElementById('btn__input');
+    
+    btnInput.addEventListener('click', function(){
+        let getInputOne = inputOne.value
+        let getInputTwo = inputTwo.value
+        let getTextareaOne = textareaOne.value
+        let getTextareaTwo = textareaTwo.value
+        let getTextareaThree = textareaThree.value
+        
+        let valueArr = [];
+        
+        let item = {
+            brand: getInputOne,
+            article: getInputTwo,
+            textTwoOne: getTextareaOne,
+            textTwoTwo: getTextareaTwo,
+            textFor: getTextareaThree,
+        }
+        
+        valueArr.push(item)
+        
+        handlerArr(valueArr[0])
+        
+        startNum++
+        counterA.textContent = `Сделано товаров: ${startNum}`
+        
+        inputTwo.value = '';
+        textareaOne.value = '';
+        textareaTwo.value = '';
+        textareaThree.value = '';
     })
+    
+    
+})

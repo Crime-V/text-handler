@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     let tbody = document.getElementById('tbody');
     let checkResualt = document.getElementById('group__watch');
@@ -9,28 +10,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /////////////// PUSH-ITEM-HTML
     function pushItem (item){
-        console.log(item[2])
-        //for (let getInItem = 0; getInItem <= item.length - 1; getInItem++) {
-            let tr = document.createElement('tr');
-            for (let getInItems in item){
-                let td = document.createElement('td');
-                let btnTd = document.createElement('button');
-                //console.log(item[getInItem][getInItems]);
-                
-                btnTd.textContent = `${item[getInItems]}`;
-                ////HANDLER BTN COPY
-                btnTd.addEventListener('click', function(){
-                navigator.clipboard.writeText(btnTd.textContent);
-                })
-                
-                td.append(btnTd);
-                
-                tr.append(td);
-            }
-            
-            //console.log(tr);
-            tbody.append(tr);
-        //}
+        let tr = document.createElement('tr');
+        for (let getInItems in item){
+            let td = document.createElement('td');
+            let btnTd = document.createElement('button');
+            btnTd.classList.add('btn__copy');
+            //console.log(item[getInItem][getInItems]);
+
+            btnTd.textContent = `${item[getInItems]}`;
+            ////HANDLER BTN GET-COPY ITEM
+            btnTd.addEventListener('click', function(){
+            navigator.clipboard.writeText(btnTd.textContent);
+            })
+
+            td.append(btnTd);
+
+            tr.append(td);
+        }
+
+        tbody.append(tr);
     }
     /////////////// HANDLER-TEXT
     function handlerArr(item){
@@ -38,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let getArticle = `<strong>Артикул:</strong> ${item.article}<br>`;
         
         let resultTextArr = [];
-        
+        ////CHECK EMPTY TEXT 
         let getTextArr = [item.textTwoOne, item.textTwoTwo, item.textFor];
         for (let deletEmpty in getTextArr){
             if (getTextArr[deletEmpty] == ''){
@@ -48,13 +46,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultTextArr.push(getTextArr[deletEmpty]);
             }
         }
-        
+        ////GET RESULT HANDLER TEXT
         let checkValue = []
-
+        
         for (let g in resultTextArr) {
             if (item.textTwoOne == resultTextArr[g]){
-                let getAreaOne = `<b>Описание:</b><br> ${item.textTwoOne}<br>`;
-                checkValue.push(getAreaOne)
+                let getAreaOne = handlerAreaOne(item.textTwoOne);
+                //let getAreaOne = `<b>Описание:</b><br> ${item.textTwoOne}<br>`;
+                checkValue.push(`<b>Описание:</b><br> ${getAreaOne}`)
             }
             if (item.textTwoTwo == resultTextArr[g]){
                 let getAreaTwo = handlerAreaTwo(item.textTwoTwo)
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-    
+        //// CHECK HOW MUCH GET ITEMS 
         let endArrAllItem = [getbrand, getArticle]
         if (checkValue.length == 2){
             endArrAllItem.push(checkValue.join(''));
@@ -74,15 +73,28 @@ document.addEventListener('DOMContentLoaded', function() {
         else {
             endArrAllItem.push(checkValue[0])
         }
-        
+        //// GET THE END RESULT
         let result = [item.brand, item.article, `<p>${endArrAllItem.join(' ')}</p>`]
         
-        ////Add IN BLOCK WATCH - HTML ITEM
+        ////ADD IN BLOCK WATCH - HTML ITEM
         let transitHtmlText = new DOMParser().parseFromString(result[2],'text/html').body.firstChild
         checkResualt.append(transitHtmlText);
         
         
         pushItem(result)
+    }
+   /////////////// HANDLER-TWO/ONE
+    function handlerAreaOne(item){
+        let getItemOne = item.trim().split('\t');
+        let resultConvertOne = getItemOne.join(' ').split('\n');
+        
+        let getArrOne = [];
+        
+        resultConvertOne.forEach((el) => {
+            getArrOne.push(`${el}<br>`)
+        })
+        
+        return getArrOne.join(' ')
     }
    /////////////// HANDLER-TWO/TWO 
     function handlerAreaTwo(item){
@@ -107,17 +119,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 
         return getAllArr
     }
-   /////////////// HANDLER-AREA/FOR  
+   /////////////// HANDLER-AREA/FOR 
+       
     function handlerAreaFor(item) {
-        let getNumTextFor = document.getElementById('textarea__num');
+        let getNumFor = document.getElementById('textarea__num');
+        console.log(getNumFor.value);
         let handlerTextFor = item.trim().split('\t');
         let endHandlerTextFor = handlerTextFor.join(' ').split('\n');
+        console.log(endHandlerTextFor)
         
         
         let transitArr = []
         for (let y = 0; y <= endHandlerTextFor.length - 1; y++){
             let s = y + 1;
-            if (s % getNumTextFor.value == 0){
+            if (s % getNumFor.value == 0){
                 transitArr.push(`${endHandlerTextFor[y]}; `);
             }
             else {
@@ -151,6 +166,13 @@ document.addEventListener('DOMContentLoaded', function() {
             textTwoTwo: getTextareaTwo,
             textFor: getTextareaThree,
         }
+        ////CHECK GET VALUE != EMPTY
+        if (item.brand == ''){
+            return;
+        }
+        if (item.article == ''){
+            return;
+        }
         
         valueArr.push(item)
         
@@ -164,6 +186,32 @@ document.addEventListener('DOMContentLoaded', function() {
         textareaTwo.value = '';
         textareaThree.value = '';
     })
+       
     
+    let btnTxtOne = document.getElementById('btn_txt_one');
+    btnTxtOne.textContent = 'Описание 2/1 - СКРЫТЬ';
+    let btnTxtTwo = document.getElementById('btn_txt_two');
+    btnTxtTwo.textContent = 'Описание 2/2 - СКРЫТЬ';
+    let btnTxtThree = document.getElementById('btn_txt_three');
+    btnTxtThree.textContent = 'Применяемость - СКРЫТЬ';
+       
+    btnTxtOne.addEventListener('click', function(){
+        textareaOne.classList.toggle('hidden__block');
+        btnTxtOne.classList.toggle('btn__green');
+        btnTxtOne.textContent = btnTxtOne.textContent === 'Описание 2/1 - СКРЫТЬ' ? 'Описание 2/1 - ОТКРЫТЬ' : 'Описание 2/1 - СКРЫТЬ';
+    })
     
-})
+    btnTxtTwo.addEventListener('click', function(){
+        textareaTwo.classList.toggle('hidden__block');
+        btnTxtTwo.classList.toggle('btn__green');
+        btnTxtTwo.textContent = btnTxtTwo.textContent === 'Описание 2/2 - СКРЫТЬ' ? 'Описание 2/2 - ОТКРЫТЬ' : 'Описание 2/2 - СКРЫТЬ';
+    })
+    
+    btnTxtThree.addEventListener('click', function(){
+        let getNumTextFor = document.getElementById('textarea__num');
+        textareaThree.classList.toggle('hidden__block');
+        getNumTextFor.classList.toggle('hidden__block');
+        btnTxtThree.classList.toggle('btn__green');
+        btnTxtThree.textContent = btnTxtThree.textContent === 'Применяемость - СКРЫТЬ' ? 'Применяемость - ОТКРЫТЬ' : 'Применяемость - СКРЫТЬ';
+    })
+}) 

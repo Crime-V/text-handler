@@ -1,5 +1,5 @@
 
-document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
     let tbody = document.getElementById('tbody');
     let checkResualt = document.getElementById('group__watch');
     let arrItems = [];
@@ -85,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
    /////////////// HANDLER-TWO/ONE
     function handlerAreaOne(item){
+        
+        item = deleteFirstLast(item);
+        
         let getItemOne = item.trim().split('\t');
         let resultConvertOne = getItemOne.join(' ').split('\n');
         
@@ -98,11 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
    /////////////// HANDLER-TWO/TWO 
     function handlerAreaTwo(item){
+        
+        item = deleteFirstLast(item);
+        
         let handlerItem = item.trim().split('\n');
         
         let oneArr = [];
         for (let x = 0; x <= handlerItem.length - 1; x = x + 2){
-            oneArr.push(`${handlerItem[x]}: `)
+            oneArr.push(`${handlerItem[x].replaceAll(':', '')}: `)
         }
 
         let twoArr = [];
@@ -115,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
             endArr.push(`${oneArr[f]}${twoArr[f]}`)
         }
 
-        let getAllArr = endArr.join('')
+        let getAllArr = endArr.join('');
                 
         return getAllArr
     }
@@ -123,7 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
        
     function handlerAreaFor(item) {
         let getNumFor = document.getElementById('textarea__num');
-        console.log(getNumFor.value);
+        //console.log(getNumFor.value);
+        
+        item = deleteFirstLast(item);
+        
         let handlerTextFor = item.trim().split('\t');
         let endHandlerTextFor = handlerTextFor.join(' ').split('\n');
         console.log(endHandlerTextFor)
@@ -140,6 +149,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         return transitArr.join(' ')
+    }
+    /////////////// DELET - "
+    function deleteFirstLast(item){
+        item.trim();
+        if (item[0] == '"'){
+            let firstItem = item.replaceAll('"', '');
+            item = firstItem;
+        }
+        //console.log(item)
+        if (item[item.length - 1] == '"'){
+            let twiceItem = item.reverse().replace("\"", "");
+            item = twiceItem.reverse();
+        }
+        return item
     }
     
     /////////////// CLICK-SEND
@@ -187,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
         textareaThree.value = '';
     })
        
-    
+/////////////// BLOCK BUTTONS CLOSE - OPEN
     let btnTxtOne = document.getElementById('btn_txt_one');
     btnTxtOne.textContent = 'Описание 2/1 - СКРЫТЬ';
     let btnTxtTwo = document.getElementById('btn_txt_two');
